@@ -21,15 +21,15 @@ public class JpaMain {
         try {
             // 여기서 Member는 테이블명이 아닌 객체를 의미한다.
             // 즉, Member 전체를 가져와 라는 뜻의 쿼리가 완성된 것
-            List<Member> result = em.createQuery("select m from Member as m where m.id > 1 order by m.id", Member.class)
-                    .setFirstResult(0)
-                    .setMaxResults(9)
-                    .getResultList();
-
-            for (Member member : result) {
-                System.out.println("member.name = " + member.getName());
-                System.out.println("member.id = " + member.getId());
-            }
+//            List<Member> result = em.createQuery("select m from Member as m where m.id > 1 order by m.id", Member.class)
+//                    .setFirstResult(0)
+//                    .setMaxResults(9)
+//                    .getResultList();
+//
+//            for (Member member : result) {
+//                System.out.println("member.name = " + member.getName());
+//                System.out.println("member.id = " + member.getId());
+//            }
 
             // 회원 등록 코드
 //            Member member = new Member();
@@ -43,6 +43,15 @@ public class JpaMain {
 
             // 회원 이름 변경
 //            findMember.setName("HelloJPA");
+
+//            Member findMember1 = em.find(Member.class, 101L);
+//            Member findMember2 = em.find(Member.class, 101L);
+
+//            Member member = em.find(Member.class, 150L);
+//            member.setName("AAAAAA");
+//
+//            em.clear();
+//            Member member2 = em.find(Member.class, 150L);
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
