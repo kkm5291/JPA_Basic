@@ -2,35 +2,70 @@ package hellojpa;
 
 import jakarta.persistence.*;
 
-import java.util.Date;
 
 @Entity
 public class Member {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "MEMBER_ID")
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "USERNAME")
     private String username;
 
-    private int age;
+//    @Column(name = "TEAM_ID")
+//    private Long teamId;
 
-    // db에서 ENUM처럼 사용할 수 있게 해주는 것
-    @Enumerated(EnumType.STRING)
-    private RoleType roleType;
+    @ManyToOne
+    @JoinColumn(name = "TEAM_ID")
+    private Team team;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createDate;
+    public Long getId() {
+        return id;
+    }
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date lastModifiedDate;
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    @Lob
-    private String description;
+    public String getUsername() {
+        return username;
+    }
 
-    // 해당 필드는 테이블로 들어가지 않고 메모리상으로만 사용하겠다
-    @Transient
-    private int tmp;
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
+    }
+
+    //    public void setUsername(String username) {
+//        this.username = username;
+//    }
+
+//    private int age;
+
+    //    // db에서 ENUM처럼 사용할 수 있게 해주는 것
+//    @Enumerated(EnumType.STRING)
+//    private RoleType roleType;
+//
+//    @Temporal(TemporalType.TIMESTAMP)
+//    private Date createDate;
+//
+//    @Temporal(TemporalType.TIMESTAMP)
+//    private Date lastModifiedDate;
+//
+//    @Lob
+//    private String description;
+//
+//    // 해당 필드는 테이블로 들어가지 않고 메모리상으로만 사용하겠다
+//    @Transient
+//    private int tmp;
     public Member() {
 
     }

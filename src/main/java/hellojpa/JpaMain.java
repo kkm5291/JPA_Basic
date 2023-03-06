@@ -5,7 +5,6 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
 
-import java.util.List;
 
 // JPA는 Transaction 단위 안에서 꼭 작업을 해줘야만 한다
 
@@ -19,6 +18,23 @@ public class JpaMain {
         tx.begin();
 
         try {
+            //저장
+            Team team = new Team();
+            team.setName("TeamA");
+            em.persist(team);
+
+            Member member = new Member();
+            member.setUsername("member1");
+            member.setTeam(team);
+            em.persist(member);
+
+            em.flush();
+            em.clear();
+
+            Member findMember = em.find(Member.class, member.getId());
+            Team findTeam = findMember.getTeam();
+            System.out.println("findTeam = " + findTeam.getName());
+
             // 여기서 Member는 테이블명이 아닌 객체를 의미한다.
             // 즉, Member 전체를 가져와 라는 뜻의 쿼리가 완성된 것
 //            List<Member> result = em.createQuery("select m from Member as m where m.id > 1 order by m.id", Member.class)
@@ -52,6 +68,9 @@ public class JpaMain {
 //
 //            em.clear();
 //            Member member2 = em.find(Member.class, 150L);
+            // GENERATE.VALUE에서 IDENTITY값의 경우에는 1차캐시에 방문하는 것이 아니라, em.persist단계에서 db에 접근해서 id값을 먼저 받아오는 방식이다
+            // 버퍼링에서 값을 가져가는게 딱히 큰 매리트가 있는것은 아니라고 함
+
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
