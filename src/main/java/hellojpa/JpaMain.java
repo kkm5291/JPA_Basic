@@ -5,6 +5,8 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
 
+import java.util.List;
+
 
 // JPA는 Transaction 단위 안에서 꼭 작업을 해줘야만 한다
 
@@ -18,22 +20,29 @@ public class JpaMain {
         tx.begin();
 
         try {
-            //저장
+
             Team team = new Team();
             team.setName("TeamA");
             em.persist(team);
 
             Member member = new Member();
             member.setUsername("member1");
-            member.setTeam(team);
+            member.changeTeam(team);;
             em.persist(member);
 
-            em.flush();
-            em.clear();
 
-            Member findMember = em.find(Member.class, member.getId());
-            Team findTeam = findMember.getTeam();
-            System.out.println("findTeam = " + findTeam.getName());
+
+            //저장
+
+//            em.flush();
+//            em.clear();
+
+            Team findTeam = em.find(Team.class, team.getId());
+            List<Member> members = findTeam.getMembers();
+
+            for (Member m : members) {
+                System.out.println("m.getUsername() = " + m.getUsername());
+            }
 
             // 여기서 Member는 테이블명이 아닌 객체를 의미한다.
             // 즉, Member 전체를 가져와 라는 뜻의 쿼리가 완성된 것
