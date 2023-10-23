@@ -5,9 +5,7 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
 
-import java.util.Arrays;
 import java.util.List;
-
 
 public class JpaMain {
     public static void main(String[] args) {
@@ -19,13 +17,30 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Member member = em.find(Member.class, 150L); // 영속상태임
-            member.setName("AAAAA");
 
-            em.clear(); // JPA에서 더이상 관리하지 않음
+            Team team = new Team();
+            team.setName("TeamA");
+//            team.getMembers().add(member);
+            em.persist(team);
 
-            Member member2 = em.find(Member.class, 150L); // 영속상태임
-            tx.commit(); // 커밋할 대 아무일 도 일어나지 않암름
+            Member member = new Member();
+            member.setName("member1");
+            member.changeTeam(team);
+            em.persist(member);
+
+//            team.getMembers().add(member);
+
+//            em.flush();
+//            em.clear();
+
+            Team findTeam = em.find(Team.class, team.getId());
+            List<Member> members = findTeam.getMembers();
+            for (Member member1 : members) {
+                System.out.println("member1.getName = " + member1.getName());
+            }
+
+
+            tx.commit();
         } catch (Exception e) {
             tx.rollback();
         } finally {

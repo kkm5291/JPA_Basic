@@ -1,20 +1,25 @@
 package hellojpa;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import jdk.jfr.Unsigned;
+
+import java.util.Date;
 
 @Entity
 public class Member {
-    public Member() {}
-    public Member(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
     @Id
+    @GeneratedValue
+    @Column(name = "MEMBER_ID")
     private Long id;
-    private String name;
 
+    @Column(name = "USERNAME")
+    private String name;
+//    @Column(name = "TEAM_ID")
+//    private Long teamId;
+
+    @ManyToOne
+    @JoinColumn(name = "TEAM_ID")
+    private Team team;
 
     public Long getId() {
         return id;
@@ -30,5 +35,15 @@ public class Member {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    // 편의 메서드 (연관관계 주인에게 작성시키도록 하자!)
+    public void changeTeam(Team team) {
+        this.team = team;
+        team.getMembers().add(this);
     }
 }
