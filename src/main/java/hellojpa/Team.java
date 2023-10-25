@@ -12,7 +12,8 @@ public class Team {
     private Long id;
     private String name;
 
-    @OneToMany(mappedBy = "team") // mappedBy : 나는 Member클래스의 team과 걸려있어! 읽기 전용이야!
+    @OneToMany // mappedBy : 나는 Member클래스의 team과 걸려있어! 읽기 전용이야!
+    @JoinColumn(name = "TEAM_ID")
     private List<Member> members = new ArrayList<>();
 
     public Long getId() {
@@ -38,4 +39,5 @@ public class Team {
     public void setMembers(List<Member> members) {
         this.members = members;
     }
+
 }
