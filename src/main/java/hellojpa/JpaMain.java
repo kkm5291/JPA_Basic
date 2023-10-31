@@ -6,6 +6,7 @@ import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
 
 import java.awt.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class JpaMain {
@@ -18,17 +19,22 @@ public class JpaMain {
         tx.begin();
 
         try {
-
             Member member = new Member();
-            member.setName("member1");
+
+            member.setName("hello");
 
             em.persist(member);
 
-            Team team = new Team();
-            team.setName("teamA");
-            team.getMembers().add(member);
+            em.flush();
+            em.clear();
 
-            em.persist(team);
+            //
+//            Member findMember = em.find(Member.class, member.getId());
+//            System.out.println("findMember.getId() = " + findMember.getId());
+//            System.out.println("findMember.getName() = " + findMember.getName());
+            //
+            Member findMember = em.getReference(Member.class, member.getId());
+            System.out.println("findMember = " + findMember.getClass());
 
             tx.commit();
         } catch (Exception e) {
@@ -39,4 +45,5 @@ public class JpaMain {
         emf.close();
 
     }
+
 }
